@@ -55,7 +55,7 @@ let dist = (pos1, pos2) => {
 };
 
 let addEntityToPlayer = (player, entityID, index = null) => {
-    if(index === null) isEntityStreamedToPlayer(player, entityID)
+    if(index === null) index = isEntityStreamedToPlayer(player, entityID)
     
     if(index === -1) {
         let entity = entities[entityID];
