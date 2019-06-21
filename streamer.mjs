@@ -202,3 +202,11 @@ export function destroyEntity(id) {
 export function doesEntityExist(id) {
     return entities[id] !== undefined;
 }
+
+export function getEntityData(id) {
+    if(!doesEntityExist(id)) return null;
+
+    return {
+        ...entities[id].data
+    }
+}
