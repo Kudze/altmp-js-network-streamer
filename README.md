@@ -17,7 +17,7 @@ NOTE: currently optimized only for static entities.
 1. Clone the repository.
 2. Install as regular alt:v resource.
 
-## Example
+## Static Entity Example
 
 Create entity from serverside:
 
@@ -42,7 +42,6 @@ createEntity(
 Spawn and despawn entity from client-size, when player is close to the entity:
 
 ```
-//Dropped items.
 import {
     ENTITY_STREAM_IN_EVENT, 
     ENTITY_STREAM_OUT_EVENT
