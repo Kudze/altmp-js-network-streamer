@@ -183,6 +183,19 @@ export function moveEntity(id, pos) {
 }
 
 export function destroyEntity(id) {
+    let entity = entities[id];
+
+    if(entity !== undefined) {
+        entity.syncedTo.forEach(
+            (playerID) => {
+                alt.Players.all[playerID].emitClient(
+                    ENTITY_STREAM_OUT_EVENT,
+                    entity
+                );
+            }
+        )
+    }
+
     entities[id] = undefined;
 }
 
