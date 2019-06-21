@@ -16,20 +16,22 @@ let tick = () => {
         (player) => {
             entities.forEach(
                 (entity, entityID) => {
-                    let shouldBeStreamed = shouldEntityBeStreamedToPlayer(
-                        player,
-                        entityID
-                    );
-                    let index = isEntityStreamedToPlayer(
-                        player,
-                        entityID
-                    );
+                    if(entity !== undefined) {
+                        let shouldBeStreamed = shouldEntityBeStreamedToPlayer(
+                            player,
+                            entityID
+                        );
+                        let index = isEntityStreamedToPlayer(
+                            player,
+                            entityID
+                        );
 
-                    //Basically if something needs to be done.
-                    if(shouldBeStreamed !== (index !== -1)) {
-                        //To make it a bit faster pass index here too.
-                        if(shouldBeStreamed) addEntityToPlayer(player, entityID, index);
-                        else removeEntityFromPlayer(player, entityID, index);
+                        //Basically if something needs to be done.
+                        if(shouldBeStreamed !== (index !== -1)) {
+                            //To make it a bit faster pass index here too.
+                            if(shouldBeStreamed) addEntityToPlayer(player, entityID, index);
+                            else removeEntityFromPlayer(player, entityID, index);
+                        }
                     }
                 }
             );
@@ -40,6 +42,24 @@ let tick = () => {
 setInterval(
     tick,
     1000
+);
+
+alt.on(
+    'playerDisconnect', 
+    (player, reason) => {
+        entities.forEach(
+            (entity, entityID) => {
+                if(entity !== undefined) {                   
+                    let index = isEntityStreamedToPlayer(
+                        player,
+                        entityID
+                    );
+
+                    if(index !== -1) removeEntityFromPlayer(player, entityID, index, false);
+                }
+            }
+        );
+    }
 );
 
 let dist = (pos1, pos2) => {
@@ -70,7 +90,7 @@ let addEntityToPlayer = (player, entityID, index = null) => {
     }
 };
 
-let removeEntityFromPlayer = (player, entityID, index = null) => {
+let removeEntityFromPlayer = (player, entityID, index = null, notify = true) => {
     if(index === null) index = isEntityStreamedToPlayer(player, entityID);
 
     if(index !== -1) {
@@ -78,11 +98,12 @@ let removeEntityFromPlayer = (player, entityID, index = null) => {
 
         entity.syncedTo.splice(index, 1);
 
-        alt.emitClient(
-            player,
-            ENTITY_STREAM_OUT_EVENT,
-            entity
-        );
+        if(notify)
+            alt.emitClient(
+                player,
+                ENTITY_STREAM_OUT_EVENT,
+                entity
+            );
     }
 };
 
@@ -196,7 +217,8 @@ export function destroyEntity(id) {
     if(entity !== undefined) {
         entity.syncedTo.forEach(
             (playerID) => {
-                alt.Players.all[playerID].emit(
+                alt.emitClient(
+                    alt.Player.all[playerID],
                     ENTITY_STREAM_OUT_EVENT,
                     entity
                 );
