@@ -126,6 +126,8 @@ export function createEntity(pos, data) {
     };
 
     entities[id] = entity;
+
+    return id;
 }
 
 export function updateEntityData(id, data) {
