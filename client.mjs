@@ -1,1 +1,1 @@
-import "./shared.mjs";
+import "shared.mjs";
