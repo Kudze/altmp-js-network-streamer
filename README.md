@@ -2,13 +2,15 @@
 
 ## Description
 
-This is a workaround for https://github.com/altmp/altv/issues/46. 
-Streaming range is 400 (same as alt:v regular stream range).
-Streaming tick is calculated on every second.
+This is a workaround for https://github.com/altmp/altv/issues/46:
+
+* Streaming range is 400 (same as alt:v regular stream range).
+* Streaming tick is calculated on every second.
 
 NOTE: currently optimized only for static entities. 
-(You can change entity's position, but this hasn't been optimized yet.)
-(Will be optimized when i'll be adding zombies on my server. ~1 week to wait prooly).
+
+* (You can change entity's position, but this hasn't been optimized yet.)
+* (Will be optimized when i'll be adding zombies on my server. ~1 week to wait prooly).
 
 ## Instalation
 
