@@ -62,7 +62,8 @@ let addEntityToPlayer = (player, entityID, index = null) => {
 
         entity.syncedTo.push(player.id);
 
-        player.emitClient(
+        alt.emitClient(
+            player,
             ENTITY_STREAM_IN_EVENT,
             entity
         );
@@ -77,7 +78,8 @@ let removeEntityFromPlayer = (player, entityID, index = null) => {
 
         entity.syncedTo.splice(index, 1);
 
-        player.emitClient(
+        alt.emitClient(
+            player,
             ENTITY_STREAM_OUT_EVENT,
             entity
         );
@@ -118,14 +120,12 @@ let findUnusedEntityID = () => {
 export function createEntity(pos, data) {
     let id = findUnusedEntityID();
 
-    entity = {
+    entities[id] = {
         id: id,
         pos: {...pos},
         data: {...data},
         syncedTo: []
-    };
-
-    entities[id] = entity;
+    };;
 
     return id;
 }
@@ -141,7 +141,11 @@ export function updateEntityData(id, data) {
         (playerID) => {
             let player = alt.Player.all[playerID];
 
-            player.emitClient(ENTITY_DATA_UPDATE_EVENT, entity);
+            alt.emitClient(
+                player,
+                ENTITY_DATA_UPDATE_EVENT, 
+                entity
+            );
         }
     );
     
@@ -161,7 +165,11 @@ export function moveEntity(id, pos) {
             let player = alt.Player.all[playerID];
 
             if(shouldEntityBeStreamedToPlayer(player, id))
-                player.emitClient(ENTITY_MOVE_EVENT, entity);
+                alt.emitClient(
+                    player,
+                    ENTITY_MOVE_EVENT,
+                    entity
+                );
 
             else toRemove.push(playerID);
         }
@@ -188,7 +196,7 @@ export function destroyEntity(id) {
     if(entity !== undefined) {
         entity.syncedTo.forEach(
             (playerID) => {
-                alt.Players.all[playerID].emitClient(
+                alt.Players.all[playerID].emit(
                     ENTITY_STREAM_OUT_EVENT,
                     entity
                 );
