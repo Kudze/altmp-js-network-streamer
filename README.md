@@ -19,7 +19,7 @@ NOTE: currently optimized only for static entities.
 
 ## Static Entity Example
 
-Create entity from serverside:
+Create entity from server-side:
 
 ```
 import { createEntity } from "altmp-js-network-streamer";
@@ -39,7 +39,7 @@ createEntity(
 );
 ```
 
-Spawn and despawn entity from client-size, when player is close to the entity:
+Spawn and despawn entity from client-side, when player is close to the entity:
 
 ```
 import {
