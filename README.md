@@ -48,7 +48,6 @@ import {
     ENTITY_STREAM_OUT_EVENT
 } from "altmp-js-network-streamer";
 
-console.log(ENTITY_STREAM_IN_EVENT);
 alt.onServer(
     ENTITY_STREAM_IN_EVENT,
     (entity) => {
